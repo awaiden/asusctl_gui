@@ -18,6 +18,17 @@ A desktop control panel for ASUS laptops built with **Tauri 2**, **SvelteKit (Sv
 - [Bun](https://bun.sh/) and Rust toolchain (`cargo`)
 - Linux Tauri system libraries (`webkit2gtk-4.1`, `gtk3`, `dbus-1` development packages)
 
+## Installation
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/awaiden/asusctl_gui/main/install.sh | bash
+```
+
+The script auto-detects your package manager (`.deb` for Debian/Ubuntu, `.rpm` for Fedora/RHEL, or `.AppImage` to `~/.local/bin/asusctl_gui` as fallback).
+
+- Force AppImage install: `curl -fsSL https://raw.githubusercontent.com/awaiden/asusctl_gui/main/install.sh | bash -s -- --appimage`
+- Pin a specific version: `VERSION=v0.1.0 curl -fsSL https://raw.githubusercontent.com/awaiden/asusctl_gui/main/install.sh | bash`
+
 ## Development & Build
 
 ```bash
