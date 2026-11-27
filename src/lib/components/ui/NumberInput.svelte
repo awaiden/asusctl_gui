@@ -1,5 +1,16 @@
+<script lang="ts" module>
+  import { tv } from "tailwind-variants";
+
+  export const numberInputVariants = tv({
+    slots: {
+      control: "tabular-nums",
+    },
+  });
+</script>
+
 <script lang="ts">
   import { Minus, Plus } from "@lucide/svelte";
+  import { useDictionary } from "dialexjs/svelte";
   import { Field, FieldLabel } from "@ui-sdk/svelte/field";
   import {
     NumberInput as UiNumberInput,
@@ -30,6 +41,8 @@
     disabled = false,
     onchange,
   }: Props = $props();
+  const common = useDictionary("common");
+  const styles = numberInputVariants();
 </script>
 
 <Field>
@@ -45,9 +58,9 @@
     onValueCommit={(v) => onchange?.(v)}
   >
     <NumberInputGroup>
-      <NumberInputDecrement aria-label="Decrease"><Minus size={14} /></NumberInputDecrement>
-      <NumberInputControl aria-label={label ? undefined : ariaLabel} class="tabular-nums" />
-      <NumberInputIncrement aria-label="Increase"><Plus size={14} /></NumberInputIncrement>
+      <NumberInputDecrement aria-label={$common.actions.decrease}><Minus size={14} /></NumberInputDecrement>
+      <NumberInputControl aria-label={label ? undefined : ariaLabel} class={styles.control()} />
+      <NumberInputIncrement aria-label={$common.actions.increase}><Plus size={14} /></NumberInputIncrement>
     </NumberInputGroup>
   </UiNumberInput>
 </Field>

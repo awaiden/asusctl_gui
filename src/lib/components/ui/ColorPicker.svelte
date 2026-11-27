@@ -1,3 +1,13 @@
+<script lang="ts" module>
+  import { tv } from "tailwind-variants";
+
+  export const colorPickerVariants = tv({
+    slots: {
+      row: "flex items-center gap-2",
+    },
+  });
+</script>
+
 <script lang="ts">
   import { Field, FieldLabel } from "@ui-sdk/svelte/field";
   import {
@@ -25,6 +35,7 @@
     disabled = false,
     onchange,
   }: Props = $props();
+  const styles = colorPickerVariants();
 </script>
 
 <Field>
@@ -43,7 +54,7 @@
     <ColorPickerSlider channel="hue">
       <ColorPickerSliderThumb />
     </ColorPickerSlider>
-    <div data-slot="row" class="flex items-center gap-2">
+    <div data-slot="row" class={styles.row()}>
       <ColorPickerSwatch />
       <ColorPickerInput aria-label={label ? `${label} hex` : "Color value"} />
     </div>

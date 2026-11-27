@@ -24,7 +24,7 @@ A desktop control panel for ASUS laptops built with **Tauri 2**, **SvelteKit (Sv
 curl -fsSL https://raw.githubusercontent.com/awaiden/asusctl_gui/main/install.sh | bash
 ```
 
-The script auto-detects your package manager (`.deb` for Debian/Ubuntu, `.rpm` for Fedora/RHEL, or `.AppImage` to `~/.local/bin/asusctl_gui` as fallback).
+The script auto-detects your package manager (`.deb` for Debian/Ubuntu, `.rpm` for Fedora/RHEL, or `.AppImage` to `~/.local/bin/asusctl_gui` with a desktop entry in `~/.local/share/applications/` as fallback).
 
 - Force AppImage install: `curl -fsSL https://raw.githubusercontent.com/awaiden/asusctl_gui/main/install.sh | bash -s -- --appimage`
 - Pin a specific version: `VERSION=v0.1.0 curl -fsSL https://raw.githubusercontent.com/awaiden/asusctl_gui/main/install.sh | bash`

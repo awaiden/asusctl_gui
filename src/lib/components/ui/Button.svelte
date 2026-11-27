@@ -14,10 +14,14 @@
         md: "h-8 px-3 text-sm",
         lg: "h-10 px-4 text-sm",
       },
+      grouped: {
+        true: "rounded-none border-0 first:rounded-l-[calc(var(--ui-radius)-1px)] last:rounded-r-[calc(var(--ui-radius)-1px)] focus-visible:relative focus-visible:z-10 focus-visible:-outline-offset-2",
+      },
     },
     defaultVariants: {
       variant: "primary",
       size: "md",
+      grouped: false,
     },
   });
 
@@ -32,6 +36,7 @@
     disabled?: boolean;
     type?: "button" | "submit" | "reset";
     ariaLabel?: string;
+    ariaPressed?: boolean;
     class?: string;
     onclick?: (event: MouseEvent) => void | Promise<unknown>;
     children?: Snippet;
@@ -40,9 +45,11 @@
   let {
     variant = "primary",
     size = "md",
+    grouped = false,
     disabled = false,
     type = "button",
     ariaLabel,
+    ariaPressed,
     class: className = "",
     onclick,
     children,
@@ -53,9 +60,10 @@
   {type}
   {disabled}
   aria-label={ariaLabel}
+  aria-pressed={ariaPressed}
   data-variant={variant}
   data-size={size}
-  class={buttonVariants({ variant, size, class: className })}
+  class={buttonVariants({ variant, size, grouped, class: className })}
   {onclick}
 >
   {@render children?.()}

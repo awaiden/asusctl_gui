@@ -1,3 +1,16 @@
+<script lang="ts" module>
+  import { tv } from "tailwind-variants";
+
+  export const selectVariants = tv({
+    slots: {
+      trigger:
+        "rounded-[var(--ui-radius)] border border-[var(--ui-border)] bg-[var(--ui-background)] px-3 text-sm text-[var(--ui-foreground)] transition-colors hover:border-[var(--ui-input)]",
+      content:
+        "z-50 rounded-[var(--ui-radius)] border border-[var(--ui-border)] bg-[var(--ui-background)] p-1 shadow-xl ring-1 ring-black/10 dark:ring-white/10",
+    },
+  });
+</script>
+
 <script lang="ts">
   import { Field, FieldLabel } from "@ui-sdk/svelte/field";
   import {
@@ -34,6 +47,7 @@
     disabled = false,
     onchange,
   }: Props = $props();
+  const styles = selectVariants();
 </script>
 
 <Field>
@@ -51,11 +65,11 @@
   >
     <SelectTrigger
       aria-label={label ? undefined : ariaLabel}
-      class="rounded-[var(--ui-radius)] border border-[var(--ui-border)] bg-[var(--ui-background)] px-3 text-sm text-[var(--ui-foreground)] transition-colors hover:border-[var(--ui-input)]"
+      class={styles.trigger()}
     >
       <SelectValue />
     </SelectTrigger>
-    <SelectContent class="z-50 rounded-[var(--ui-radius)] border border-[var(--ui-border)] bg-[var(--ui-background)] p-1 shadow-xl ring-1 ring-black/10 dark:ring-white/10">
+    <SelectContent class={styles.content()}>
       {#each items as item (item.value)}
         <SelectItem value={item.value} disabled={item.disabled}>
           <span>{item.label}</span>

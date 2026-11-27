@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { useDictionary } from "dialexjs/svelte";
-  import PageHeader from "$lib/components/PageHeader.svelte";
-  import Loading from "$lib/components/Loading.svelte";
-  import ErrorBox from "$lib/components/ErrorBox.svelte";
-  import Card from "$lib/components/Card.svelte";
-  import RawOutput from "$lib/components/RawOutput.svelte";
+  import PageHeader from "$lib/components/ui/PageHeader.svelte";
+  import Loading from "$lib/components/ui/Loading.svelte";
+  import ErrorBox from "$lib/components/ui/ErrorBox.svelte";
+  import Card from "$lib/components/ui/Card.svelte";
+  import RawOutput from "$lib/components/ui/RawOutput.svelte";
   import Speedometer from "$lib/components/Speedometer.svelte";
   import { getThermals, type ThermalMetrics } from "$lib/api";
   import { app, loadInfo } from "$lib/state.svelte";
@@ -46,9 +46,10 @@
 {#if app.loading && !app.info}
   <Loading />
 {:else if app.error}
-  <ErrorBox message={app.error} />
+  <ErrorBox message={app.error} onretry={refreshAll} />
 {:else if app.info}
-  <Card title={$pages.system.deviceSoftware}>
+  <div class="space-y-4">
+    <Card title={$pages.system.deviceSoftware}>
     <dl class="grid grid-cols-1 gap-3 text-sm sm:grid-cols-3">
       <div class="rounded-[var(--ui-radius)] border border-[var(--ui-border)] bg-[var(--ui-background)] px-3 py-2">
         <dt class="text-xs text-[var(--ui-muted-foreground)]">{$pages.system.productFamily}</dt>
@@ -104,5 +105,6 @@
     {#if app.info.supported_raw}
       <RawOutput text={app.info.supported_raw} label="asusctl info --show-supported" />
     {/if}
+  </div>
   </div>
 {/if}

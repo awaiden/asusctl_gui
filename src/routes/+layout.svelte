@@ -33,7 +33,7 @@
 
 <div class="flex h-screen">
   <Sidebar />
-  <main class="flex-1 overflow-y-auto p-6">
+  <main class="min-w-0 flex-1 overflow-y-auto p-6">
     <div class="mx-auto max-w-4xl">
       {@render children()}
     </div>

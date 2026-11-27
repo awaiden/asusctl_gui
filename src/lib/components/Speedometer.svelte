@@ -20,7 +20,7 @@
   const tempColor = $derived.by(() => {
     if (temp === null) return "var(--ui-border)";
     if (temp >= 90) return "var(--ui-destructive)";
-    if (temp >= 78) return "#f59e0b";
+    if (temp >= 78) return "var(--ui-warning)";
     return "var(--ui-primary)";
   });
 
@@ -38,7 +38,7 @@
 
   const ticks = Array.from({ length: 11 }, (_, i) => {
     const pct = i / 10;
-    const color = pct >= 0.9 ? "var(--ui-destructive)" : pct >= 0.75 ? "#f59e0b" : "var(--ui-border)";
+    const color = pct >= 0.9 ? "var(--ui-destructive)" : pct >= 0.75 ? "var(--ui-warning)" : "var(--ui-border)";
     return { pct, color, ...tickCoords(pct, 49, 53) };
   });
 </script>
@@ -73,7 +73,7 @@
       stroke-linecap="round"
       stroke-dasharray={outerLen}
       stroke-dashoffset={tempOffset}
-      class="transition-[stroke-dashoffset,stroke] duration-300"
+      class="transition-[stroke-dashoffset,stroke] duration-300 motion-reduce:transition-none"
     />
     <!-- Inner arc: Fan RPM -->
     <path
@@ -86,12 +86,12 @@
     <path
       d="M 23 54 A 32 32 0 0 1 87 54"
       fill="none"
-      stroke="#38bdf8"
+      stroke="var(--ui-fan)"
       stroke-width="5"
       stroke-linecap="round"
       stroke-dasharray={innerLen}
       stroke-dashoffset={rpmOffset}
-      class="transition-[stroke-dashoffset] duration-300"
+      class="transition-[stroke-dashoffset] duration-300 motion-reduce:transition-none"
     />
   </svg>
   <div class="mt-2 flex flex-col items-center gap-0.5 text-center tabular-nums">

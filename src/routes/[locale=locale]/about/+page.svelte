@@ -1,7 +1,7 @@
 <script lang="ts">
   import { useDictionary } from "dialexjs/svelte";
-  import PageHeader from "$lib/components/PageHeader.svelte";
-  import Card from "$lib/components/Card.svelte";
+  import PageHeader from "$lib/components/ui/PageHeader.svelte";
+  import Card from "$lib/components/ui/Card.svelte";
   import { ExternalLink } from "@lucide/svelte";
 
   const pages = useDictionary("pages");
@@ -25,7 +25,7 @@
           href="https://github.com/awaiden/asusctl_gui"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 font-medium text-[var(--ui-primary)] hover:underline"
+          class="inline-flex items-center gap-1.5 rounded-sm font-medium text-[var(--ui-primary)] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ui-ring)]"
         >
           <span>github.com/awaiden/asusctl_gui</span>
           <ExternalLink size={14} />

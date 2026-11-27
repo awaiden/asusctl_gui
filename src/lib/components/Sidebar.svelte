@@ -5,15 +5,15 @@
   import { DEFAULT_LOCALE, isLocale, LOCALE_OPTIONS, localizedPath, type Locale } from "$lib/i18n/locales";
   import { app, emptySupported } from "$lib/state.svelte";
   import { setTheme, theme, type ThemeMode } from "$lib/theme.svelte";
-  import Select from "$lib/components/Select.svelte";
-  import { Battery, CircleHelp, Cpu, Fan, Globe, Info, Keyboard, Monitor, Moon, Sun, Wrench, Zap } from "@lucide/svelte";
+  import Select from "$lib/components/ui/Select.svelte";
+  import { Battery, CircleHelp, Fan, Globe, Info, Keyboard, Monitor, Moon, Sun, Wrench, Zap } from "@lucide/svelte";
   import { tv } from "tailwind-variants";
 
   const common = useDictionary("common");
   const currentLocale = $derived<Locale>(isLocale(page.params.locale) ? page.params.locale : DEFAULT_LOCALE);
 
   const navItem = tv({
-    base: "flex items-center gap-2 rounded-[var(--ui-radius)] border px-2.5 py-1.5 text-sm no-underline transition-colors",
+    base: "flex items-center gap-2 rounded-[var(--ui-radius)] border px-2.5 py-1.5 text-sm no-underline transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ui-ring)]",
     variants: {
       state: {
         active: "border-[var(--ui-border)] bg-[var(--ui-background)] font-medium text-[var(--ui-foreground)]",
@@ -23,6 +23,16 @@
     },
     defaultVariants: {
       state: "idle",
+    },
+  });
+
+  const themeBtn = tv({
+    base: "flex cursor-pointer items-center justify-center py-1.5 transition-colors focus-visible:relative focus-visible:z-10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[var(--ui-ring)]",
+    variants: {
+      active: {
+        true: "bg-[var(--ui-primary)] text-[var(--ui-primary-foreground)]",
+        false: "text-[var(--ui-muted-foreground)] hover:text-[var(--ui-foreground)]",
+      },
     },
   });
 
@@ -52,10 +62,10 @@
   });
 </script>
 
-<nav aria-label={$common.nav.primaryAria} class="flex w-52 shrink-0 flex-col border-r border-[var(--ui-border)] bg-[var(--ui-muted)] p-3">
+<nav aria-label={$common.nav.primaryAria} class="flex w-56 shrink-0 flex-col border-r border-[var(--ui-border)] bg-[var(--ui-muted)] p-3">
   <div class="mb-3 flex items-center gap-2 px-2 text-lg font-semibold text-[var(--ui-foreground)]">
-    <Cpu size={20} class="text-[var(--ui-primary)]" />
-    <span>asusctl</span>
+    <img src="/icon.svg" alt="" class="h-6 w-6 shrink-0" />
+    <span>ASUS Control</span>
   </div>
   <div class="flex flex-1 flex-col gap-1">
     {#each items as it (it.href)}
@@ -65,14 +75,14 @@
           aria-current={page.url.pathname === it.href ? "page" : undefined}
           class={navItem({ state: page.url.pathname === it.href ? "active" : "idle" })}
         >
-          <it.icon size={16} />{it.label}
+          <it.icon size={16} class="shrink-0" /><span class="truncate">{it.label}</span>
         </a>
       {:else}
         <span
           class={navItem({ state: "disabled" })}
           title={$common.status.unsupported}
         >
-          <it.icon size={16} />{it.label}
+          <it.icon size={16} class="shrink-0" /><span class="truncate">{it.label}</span>
         </span>
       {/if}
     {/each}
@@ -94,9 +104,7 @@
           aria-label={opt.label}
           aria-pressed={theme.mode === opt.mode}
           onclick={() => setTheme(opt.mode)}
-          class="flex items-center justify-center py-1.5 transition-colors {theme.mode === opt.mode
-            ? 'bg-[var(--ui-primary)] text-[var(--ui-primary-foreground)]'
-            : 'text-[var(--ui-muted-foreground)] hover:text-[var(--ui-foreground)]'}"
+          class={themeBtn({ active: theme.mode === opt.mode })}
         >
           <opt.icon size={14} />
         </button>

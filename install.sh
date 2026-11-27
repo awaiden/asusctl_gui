@@ -45,6 +45,45 @@ find_asset() {
     | head -n 1 || true
 }
 
+install_desktop_entry() {
+  local exec_path="$1"
+  local data_dir="${XDG_DATA_HOME:-$HOME/.local/share}"
+  local apps_dir="${data_dir}/applications"
+  local icon_dir="${data_dir}/icons/hicolor/512x512/apps"
+  local icon_path="${icon_dir}/asusctl_gui.png"
+  local desktop_file="${apps_dir}/com.awaiden.asusctl-gui.desktop"
+  local ref="${VERSION:-main}"
+  local icon_value="asusctl_gui"
+
+  mkdir -p "$apps_dir" "$icon_dir"
+
+  if curl -fsSL -o "$icon_path" "https://raw.githubusercontent.com/${REPO}/${ref}/src-tauri/icons/icon.png" \
+    || { [[ "$ref" != "main" ]] && curl -fsSL -o "$icon_path" "https://raw.githubusercontent.com/${REPO}/main/src-tauri/icons/icon.png"; }; then
+    if [[ -s "$icon_path" ]]; then
+      icon_value="$icon_path"
+    fi
+  fi
+
+  cat > "$desktop_file" <<EOF
+[Desktop Entry]
+Type=Application
+Name=ASUS Control
+GenericName=ASUS Hardware Control
+Comment=Desktop control panel for ASUS Linux laptops
+Exec=${exec_path}
+Icon=${icon_value}
+Terminal=false
+Categories=System;Settings;HardwareSettings;Utility;
+Keywords=asus;asusctl;rog;tuf;fan;battery;aura;rgb;power;
+StartupWMClass=asusctl_gui
+StartupNotify=true
+EOF
+
+  command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database "$apps_dir" 2>/dev/null || true
+  command -v gtk-update-icon-cache >/dev/null 2>&1 && gtk-update-icon-cache -f -t "${data_dir}/icons/hicolor" 2>/dev/null || true
+  echo "Created desktop entry at $desktop_file"
+}
+
 install_pkg() {
   local ext="$1"
   local url
@@ -78,6 +117,7 @@ install_pkg() {
       mv "$file" "$dest"
       chmod +x "$dest"
       echo "Installed to $dest"
+      install_desktop_entry "$dest"
       case ":$PATH:" in
         *":$dest_dir:"*) ;;
         *) echo "Note: add '$dest_dir' to your PATH to run 'asusctl_gui' directly." ;;

@@ -1,17 +1,17 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { useDictionary } from "dialexjs/svelte";
-  import PageHeader from "$lib/components/PageHeader.svelte";
-  import Loading from "$lib/components/Loading.svelte";
-  import ErrorBox from "$lib/components/ErrorBox.svelte";
-  import Unsupported from "$lib/components/Unsupported.svelte";
-  import Card from "$lib/components/Card.svelte";
-  import RawOutput from "$lib/components/RawOutput.svelte";
-  import Toggle from "$lib/components/Toggle.svelte";
-  import Button from "$lib/components/Button.svelte";
-  import Select from "$lib/components/Select.svelte";
-  import SegmentedControl from "$lib/components/SegmentedControl.svelte";
-  import ColorPicker from "$lib/components/ColorPicker.svelte";
+  import PageHeader from "$lib/components/ui/PageHeader.svelte";
+  import Loading from "$lib/components/ui/Loading.svelte";
+  import ErrorBox from "$lib/components/ui/ErrorBox.svelte";
+  import Unsupported from "$lib/components/ui/Unsupported.svelte";
+  import Card from "$lib/components/ui/Card.svelte";
+  import RawOutput from "$lib/components/ui/RawOutput.svelte";
+  import Toggle from "$lib/components/ui/Toggle.svelte";
+  import Button from "$lib/components/ui/Button.svelte";
+  import Select from "$lib/components/ui/Select.svelte";
+  import SegmentedControl from "$lib/components/ui/SegmentedControl.svelte";
+  import ColorPicker from "$lib/components/ui/ColorPicker.svelte";
   import { ledsGet, ledsSet, ledsNext, ledsPrev, auraEffect, auraPower, isUnsupported, errMsg,
     type Brightness, type AuraEffect, type Speed, type Direction, type PowerZone, type LedsOut } from "$lib/api";
   import { app, loadInfo, toast } from "$lib/state.svelte";
@@ -28,6 +28,7 @@
   const twoColourEffects = new Set<AuraEffect>(["breathe", "stars"]);
 
   let loading = $state(true);
+  let busy = $state(false);
   let error = $state<string | null>(null);
   let unsupported = $state(false);
   let leds = $state<LedsOut | null>(null);
@@ -46,6 +47,7 @@
   });
   const hex = (c: string) => c.replace("#", "").toUpperCase();
   const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+  const formatEffect = (e: string) => e.split("-").map(cap).join(" ");
   const hasZones = $derived((app.info?.supported.interfaces ?? []).length > 0 && (app.info?.supported.aura_modes.length ?? 0) > 0);
   const needsColour = $derived(!noColourEffects.has(effect));
   const needsColour2 = $derived(twoColourEffects.has(effect));
@@ -73,8 +75,10 @@
     } finally { loading = false; }
   }
   async function run(fn: () => Promise<string>, ok: string) {
+    busy = true;
     try { await fn(); toast(ok); leds = await ledsGet().catch(() => leds); }
     catch (e) { toast(errMsg(e), "error"); }
+    finally { busy = false; }
   }
   onMount(load);
 </script>
@@ -85,33 +89,35 @@
 {:else if unsupported}
   <Unsupported />
 {:else if error}
-  <ErrorBox message={error} />
+  <ErrorBox message={error} onretry={load} />
 {:else}
   <div class="space-y-4">
     <!-- Backlight & Live Preview -->
     <Card title={$pages.keyboard.backlight}>
       <div class="mb-4 overflow-hidden rounded-[var(--ui-radius)] border border-[var(--ui-border)] bg-[var(--ui-background)] p-3">
         <div class="mb-2 flex items-center justify-between text-xs text-[var(--ui-muted-foreground)]">
-          <span>{$pages.keyboard.preview} · <span class="font-medium text-[var(--ui-foreground)]">{effect}</span></span>
+          <span>{$pages.keyboard.preview} · <span class="font-medium text-[var(--ui-foreground)]">{formatEffect(effect)}</span></span>
           <span>{$pages.keyboard.level}: <span class="font-medium text-[var(--ui-foreground)]">{leds?.brightness ? ($pages.keyboard.levels[leds.brightness.toLowerCase() as Brightness] ?? cap(leds.brightness)) : $common.status.unknown}</span></span>
         </div>
-        <div class="h-2.5 w-full rounded-full transition-all duration-300" style={previewStyle}></div>
+        <div class="h-2.5 w-full rounded-full transition-all duration-300 motion-reduce:transition-none" style={previewStyle}></div>
       </div>
 
       <div class="flex flex-wrap items-center justify-between gap-3 text-sm">
-        <div class="inline-flex divide-x divide-[var(--ui-border)] overflow-hidden rounded-[var(--ui-radius)] border border-[var(--ui-border)]">
+        <div class="inline-flex divide-x divide-[var(--ui-border)] rounded-[var(--ui-radius)] border border-[var(--ui-border)]">
           {#each levels as b (b)}
             <Button
               variant={leds?.brightness?.toLowerCase() === b ? "primary" : "secondary"}
               size="sm"
-              class="rounded-none border-0"
+              grouped
+              ariaPressed={leds?.brightness?.toLowerCase() === b}
+              disabled={busy}
               onclick={() => run(() => ledsSet(b), $pages.keyboard.toastBrightness($pages.keyboard.levels[b]))}
             >{$pages.keyboard.levels[b]}</Button>
           {/each}
         </div>
         <div class="flex gap-2">
-          <Button variant="secondary" size="sm" onclick={() => run(ledsPrev, $pages.keyboard.toastPrevBrightness)}>{$common.actions.prev}</Button>
-          <Button variant="secondary" size="sm" onclick={() => run(ledsNext, $pages.keyboard.toastNextBrightness)}>{$common.actions.next}</Button>
+          <Button variant="secondary" size="sm" disabled={busy} onclick={() => run(ledsPrev, $pages.keyboard.toastPrevBrightness)}>{$common.actions.prev}</Button>
+          <Button variant="secondary" size="sm" disabled={busy} onclick={() => run(ledsNext, $pages.keyboard.toastNextBrightness)}>{$common.actions.next}</Button>
         </div>
       </div>
     </Card>
@@ -123,7 +129,7 @@
       {:else}
         <div class="grid grid-cols-1 gap-6 text-sm md:grid-cols-2">
           <div class="space-y-4">
-            <Select label={$pages.keyboard.mode} items={available.map((e) => ({ value: e, label: e }))} bind:value={effect} />
+            <Select label={$pages.keyboard.mode} items={available.map((e) => ({ value: e, label: formatEffect(e) }))} bind:value={effect} />
             <SegmentedControl label={$pages.keyboard.speed} items={speeds.map((s) => ({ value: s, label: $pages.keyboard.speeds[s] }))} bind:value={speed} />
             {#if needsDirection}
               <SegmentedControl label={$pages.keyboard.direction} items={dirs.map((d) => ({ value: d, label: $pages.keyboard.directions[d] }))} bind:value={direction} />
@@ -149,11 +155,11 @@
         </div>
 
         <div class="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-[var(--ui-border)] pt-4">
-          <Button variant="primary" size="sm"
-            onclick={() => run(() => auraEffect({ effect, colour: hex(colour), colour2: hex(colour2), speed, direction }), $pages.keyboard.toastEffectApplied(effect))}>{$pages.keyboard.applyEffect}</Button>
+          <Button variant="primary" size="sm" disabled={busy}
+            onclick={() => run(() => auraEffect({ effect, colour: hex(colour), colour2: hex(colour2), speed, direction }), $pages.keyboard.toastEffectApplied(formatEffect(effect)))}>{$pages.keyboard.applyEffect}</Button>
           <div class="flex gap-2">
-            <Button variant="secondary" size="sm" onclick={() => run(() => auraEffect({ switch: "prev" }), $pages.keyboard.toastPrevEffect)}>{$pages.keyboard.prevMode}</Button>
-            <Button variant="secondary" size="sm" onclick={() => run(() => auraEffect({ switch: "next" }), $pages.keyboard.toastNextEffect)}>{$pages.keyboard.nextMode}</Button>
+            <Button variant="secondary" size="sm" disabled={busy} onclick={() => run(() => auraEffect({ switch: "prev" }), $pages.keyboard.toastPrevEffect)}>{$pages.keyboard.prevMode}</Button>
+            <Button variant="secondary" size="sm" disabled={busy} onclick={() => run(() => auraEffect({ switch: "next" }), $pages.keyboard.toastNextEffect)}>{$pages.keyboard.nextMode}</Button>
           </div>
         </div>
       {/if}
@@ -169,7 +175,7 @@
             <Toggle label={$pages.keyboard.sleep} bind:checked={sleep} />
             <Toggle label={$pages.keyboard.shutdown} bind:checked={shutdown} />
           </div>
-          <Button variant="primary" size="sm"
+          <Button variant="primary" size="sm" disabled={busy}
             onclick={() => run(() => auraPower(zone, boot, awake, sleep, shutdown), $pages.keyboard.toastZoneUpdated($pages.keyboard.zones[zone]))}>{$pages.keyboard.applyZone}</Button>
         </div>
       </Card>

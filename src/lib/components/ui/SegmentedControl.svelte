@@ -1,3 +1,16 @@
+<script lang="ts" module>
+  import { tv } from "tailwind-variants";
+
+  export const segmentedControlVariants = tv({
+    slots: {
+      root: "rounded-[var(--ui-radius)] border border-[var(--ui-border)] bg-[var(--ui-background)] p-0.5",
+      indicator:
+        "rounded-[calc(var(--ui-radius)-2px)] border border-[var(--ui-border)] bg-[var(--ui-muted)] shadow-sm",
+      item: "rounded-[calc(var(--ui-radius)-2px)] border-0",
+    },
+  });
+</script>
+
 <script lang="ts">
   import { Field, FieldLabel } from "@ui-sdk/svelte/field";
   import {
@@ -29,6 +42,7 @@
     disabled = false,
     onchange,
   }: Props = $props();
+  const styles = segmentedControlVariants();
 </script>
 
 <Field>
@@ -39,14 +53,14 @@
     bind:value
     {disabled}
     aria-label={label ? undefined : ariaLabel}
-    class="rounded-[var(--ui-radius)] border border-[var(--ui-border)] bg-[var(--ui-background)] p-0.5"
+    class={styles.root()}
     onValueChange={(v) => {
       if (typeof v === "string") onchange?.(v);
     }}
   >
-    <SegmentedControlIndicator class="rounded-[calc(var(--ui-radius)-2px)] border border-[var(--ui-border)] bg-[var(--ui-muted)] shadow-sm" />
+    <SegmentedControlIndicator class={styles.indicator()} />
     {#each items as item (item.value)}
-      <SegmentedControlItem value={item.value} disabled={item.disabled} class="rounded-[calc(var(--ui-radius)-2px)] border-0">
+      <SegmentedControlItem value={item.value} disabled={item.disabled} class={styles.item()}>
         {item.label}
       </SegmentedControlItem>
     {/each}

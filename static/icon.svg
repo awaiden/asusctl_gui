@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18181b" />
+      <stop offset="100%" stop-color="#09090b" />
+    </linearGradient>
+    <linearGradient id="a-grad" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8" />
+      <stop offset="50%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#4f46e5" />
+    </linearGradient>
+    <linearGradient id="slash-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#818cf8" />
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded-square squircle container -->
+  <rect
+    x="32"
+    y="32"
+    width="960"
+    height="960"
+    rx="224"
+    fill="url(#bg-grad)"
+    stroke="#3f3f46"
+    stroke-opacity="0.6"
+    stroke-width="12"
+  />
+
+  <!-- Bold geometric 'A' / chevron hardware emblem -->
+  <path
+    d="M 512 208 L 784 784 L 648 784 L 512 480 L 376 784 L 240 784 Z"
+    fill="url(#a-grad)"
+  />
+
+  <!-- Sleek electric cyan/sky LED slash bar -->
+  <path
+    d="M 332 612 L 692 548 L 724 624 L 300 688 Z"
+    fill="url(#slash-grad)"
+  />
+</svg>

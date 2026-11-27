@@ -1,6 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "asusctl_gui",
+  "productName": "ASUS Control",
+  "mainBinaryName": "asusctl_gui",
   "version": "0.1.0",
   "identifier": "com.awaiden.asusctl-gui",
   "build": {
@@ -26,10 +27,14 @@
   "bundle": {
     "active": true,
     "targets": "all",
+    "category": "Utility",
+    "shortDescription": "Desktop control panel for ASUS Linux laptops",
+    "longDescription": "Desktop control panel for ASUS Linux laptops powered by asusctl.",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
       "icons/128x128@2x.png",
+      "icons/icon.png",
       "icons/icon.icns",
       "icons/icon.ico"
     ]
