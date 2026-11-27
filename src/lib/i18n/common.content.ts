@@ -5,6 +5,7 @@ export default defineDictionary("common", {
     nav: {
       primaryAria: "Primary",
       systemInfo: "System Info",
+      monitor: "System Monitor",
       powerProfiles: "Power Profiles",
       keyboardAura: "Keyboard & Aura",
       battery: "Battery",
@@ -45,6 +46,7 @@ export default defineDictionary("common", {
     nav: {
       primaryAria: "Ana menü",
       systemInfo: "Sistem Bilgisi",
+      monitor: "Sistem İzleyici",
       powerProfiles: "Güç Profilleri",
       keyboardAura: "Klavye & Aura",
       battery: "Pil",
@@ -85,6 +87,7 @@ export default defineDictionary("common", {
     nav: {
       primaryAria: "Hauptmenü",
       systemInfo: "Systeminfo",
+      monitor: "Systemmonitor",
       powerProfiles: "Energieprofile",
       keyboardAura: "Tastatur & Aura",
       battery: "Akku",
@@ -125,6 +128,7 @@ export default defineDictionary("common", {
     nav: {
       primaryAria: "Navigation principale",
       systemInfo: "Infos système",
+      monitor: "Moniteur système",
       powerProfiles: "Profils d'alimentation",
       keyboardAura: "Clavier & Aura",
       battery: "Batterie",
@@ -165,6 +169,7 @@ export default defineDictionary("common", {
     nav: {
       primaryAria: "Navegación principal",
       systemInfo: "Info del sistema",
+      monitor: "Monitor del sistema",
       powerProfiles: "Perfiles de energía",
       keyboardAura: "Teclado y Aura",
       battery: "Batería",
@@ -205,6 +210,7 @@ export default defineDictionary("common", {
     nav: {
       primaryAria: "Основная навигация",
       systemInfo: "О системе",
+      monitor: "Монитор системы",
       powerProfiles: "Профили питания",
       keyboardAura: "Клавиатура и Aura",
       battery: "Батарея",
@@ -245,6 +251,7 @@ export default defineDictionary("common", {
     nav: {
       primaryAria: "主导航",
       systemInfo: "系统信息",
+      monitor: "系统监视器",
       powerProfiles: "电源配置文件",
       keyboardAura: "键盘与 Aura",
       battery: "电池",
@@ -285,6 +292,7 @@ export default defineDictionary("common", {
     nav: {
       primaryAria: "メインナビゲーション",
       systemInfo: "システム情報",
+      monitor: "システムモニター",
       powerProfiles: "電源プロファイル",
       keyboardAura: "キーボード & Aura",
       battery: "バッテリー",

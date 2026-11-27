@@ -12,7 +12,7 @@
   <dl class="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
     <div class="rounded-[var(--ui-radius)] border border-[var(--ui-border)] bg-[var(--ui-background)] px-3 py-2">
       <dt class="text-xs text-[var(--ui-muted-foreground)]">{$pages.about.version}</dt>
-      <dd class="mt-0.5 font-mono font-medium text-[var(--ui-foreground)]">0.1.1</dd>
+      <dd class="mt-0.5 font-mono font-medium text-[var(--ui-foreground)]">0.2.0</dd>
     </div>
     <div class="rounded-[var(--ui-radius)] border border-[var(--ui-border)] bg-[var(--ui-background)] px-3 py-2">
       <dt class="text-xs text-[var(--ui-muted-foreground)]">{$pages.about.license}</dt>

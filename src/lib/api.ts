@@ -40,6 +40,32 @@ export interface ThermalMetrics {
   cpu_fan_rpm: number | null;
   gpu_fan_rpm: number | null;
 }
+export interface SystemMetrics {
+  cpu_usage_pct: number;
+  cpu_per_core_pct: number[];
+  cpu_freq_mhz: number | null;
+  load_avg: [number, number, number];
+  uptime_secs: number;
+  mem_total_bytes: number;
+  mem_used_bytes: number;
+  mem_pct: number;
+  swap_total_bytes: number;
+  swap_used_bytes: number;
+  swap_pct: number;
+  cpu_temp_c: number | null;
+  gpu_temp_c: number | null;
+  nvme_temp_c: number | null;
+  cpu_fan_rpm: number | null;
+  gpu_fan_rpm: number | null;
+  battery_pct: number | null;
+  battery_status: string | null;
+  battery_power_w: number | null;
+  ac_online: boolean | null;
+  net_rx_bytes_per_sec: number;
+  net_tx_bytes_per_sec: number;
+  disk_read_bytes_per_sec: number;
+  disk_write_bytes_per_sec: number;
+}
 export interface ProfileList {
   profiles: string[];
   raw: string;
@@ -129,6 +155,34 @@ export const getThermals = () =>
     gpu_temp_c: 48,
     cpu_fan_rpm: 2400,
     gpu_fan_rpm: 2100,
+  }));
+
+export const getSystemMetrics = () =>
+  call<SystemMetrics>("get_system_metrics", undefined, () => ({
+    cpu_usage_pct: 28.4,
+    cpu_per_core_pct: [32, 24, 41, 18, 29, 22, 35, 26],
+    cpu_freq_mhz: 3250,
+    load_avg: [1.42, 1.18, 0.95],
+    uptime_secs: 7420,
+    mem_total_bytes: 16 * 1024 * 1024 * 1024,
+    mem_used_bytes: 9.4 * 1024 * 1024 * 1024,
+    mem_pct: 58.75,
+    swap_total_bytes: 8 * 1024 * 1024 * 1024,
+    swap_used_bytes: 0.5 * 1024 * 1024 * 1024,
+    swap_pct: 6.25,
+    cpu_temp_c: 54,
+    gpu_temp_c: 48,
+    nvme_temp_c: 41,
+    cpu_fan_rpm: 2400,
+    gpu_fan_rpm: 2100,
+    battery_pct: 80,
+    battery_status: "Not charging",
+    battery_power_w: 0,
+    ac_online: true,
+    net_rx_bytes_per_sec: 125_000,
+    net_tx_bytes_per_sec: 18_400,
+    disk_read_bytes_per_sec: 420_000,
+    disk_write_bytes_per_sec: 95_000,
   }));
 
 export const getInfo = () =>

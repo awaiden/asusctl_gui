@@ -6,7 +6,7 @@
   import { app, emptySupported } from "$lib/state.svelte";
   import { setTheme, theme, type ThemeMode } from "$lib/theme.svelte";
   import Select from "$lib/components/ui/Select.svelte";
-  import { Battery, CircleHelp, Fan, Globe, Info, Keyboard, Monitor, Moon, Sun, Wrench, Zap } from "@lucide/svelte";
+  import { Activity, Battery, CircleHelp, Fan, Globe, Info, Keyboard, Monitor, Moon, Sun, Wrench, Zap } from "@lucide/svelte";
   import { tv } from "tailwind-variants";
 
   const common = useDictionary("common");
@@ -39,6 +39,7 @@
   const sup = $derived(app.info?.supported ?? emptySupported);
   const items = $derived([
     { href: `/${currentLocale}`, label: $common.nav.systemInfo, icon: Info, ok: true },
+    { href: `/${currentLocale}/monitor`, label: $common.nav.monitor, icon: Activity, ok: true },
     { href: `/${currentLocale}/power`, label: $common.nav.powerProfiles, icon: Zap, ok: true },
     { href: `/${currentLocale}/keyboard`, label: $common.nav.keyboardAura, icon: Keyboard, ok: true },
     { href: `/${currentLocale}/battery`, label: $common.nav.battery, icon: Battery, ok: true },

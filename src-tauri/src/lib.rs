@@ -1,6 +1,8 @@
 pub mod asusctl;
+pub mod monitor;
 
 use asusctl::*;
+use monitor::get_system_metrics;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -9,6 +11,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             get_info,
             get_thermals,
+            get_system_metrics,
             profile_list,
             profile_get,
             profile_set,
